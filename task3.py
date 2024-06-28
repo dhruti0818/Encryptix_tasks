@@ -1,35 +1,53 @@
-# Password Generator
-
 import random
-import string
 
-def create_password(length, letters=True, numbers=True, special_chars=True):
-    char_set = ''
-    if letters:
-        char_set += string.ascii_letters
-    if numbers:
-        char_set += string.digits
-    if special_chars:
-        char_set += string.punctuation
+def get_computer_choice():
+    return random.choice(['rock', 'paper', 'scissors'])
 
-    if not char_set:
-        print("Error: You must select at least one character type.")
-        return None
+def determine_winner(user_choice, computer_choice):
+    if user_choice == computer_choice:
+        return 'tie'
+    elif (user_choice == 'rock' and computer_choice == 'scissors') or \
+         (user_choice == 'scissors' and computer_choice == 'paper') or \
+         (user_choice == 'paper' and computer_choice == 'rock'):
+        return 'user'
+    else:
+        return 'computer'
 
-    generated_password = ''.join(random.choice(char_set) for _ in range(length))
-    return generated_password
-
-def password_generator():
-    print("Password Generator")
-
-    password_length = int(input("Enter password length: "))
-    include_letters = input("Include letters? (y/n): ").lower() == 'y'
-    include_numbers = input("Include numbers? (y/n): ").lower() == 'y'
-    include_special_chars = input("Include special characters? (y/n): ").lower() == 'y'
-
-    generated_password = create_password(password_length, include_letters, include_numbers, include_special_chars)
-    if generated_password:
-        print("Generated password:", generated_password)
+def main():
+    user_score = 0
+    computer_score = 0
+    
+    print("Welcome to Rock-Paper-Scissors!")
+    
+    while True:
+        user_choice = input("Choose rock, paper, or scissors: ").lower()
+        
+        if user_choice not in ['rock', 'paper', 'scissors']:
+            print("Invalid choice. Please choose again.")
+            continue
+        
+        computer_choice = get_computer_choice()
+        print(f"Computer chose: {computer_choice}")
+        
+        winner = determine_winner(user_choice, computer_choice)
+        
+        if winner == 'user':
+            user_score += 1
+            print("You win this round!")
+        elif winner == 'computer':
+            computer_score += 1
+            print("Computer wins this round!")
+        else:
+            print("It's a tie!")
+        
+        print(f"Score -> You: {user_score}, Computer: {computer_score}")
+        
+        play_again = input("Do you want to play again? (yes/no): ").lower()
+        if play_again != 'yes':
+            break
+    
+    print("Thank you for playing!")
+    print(f"Final Score -> You: {user_score}, Computer: {computer_score}")
 
 if __name__ == "__main__":
-    password_generator()
+    main()
